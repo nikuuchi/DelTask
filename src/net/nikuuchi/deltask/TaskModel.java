@@ -4,8 +4,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TaskModel {
-	private String title;
+	public static final String TABLE_NAME = "Task";
+	public static final String COLUMN_ID = "id";
+	public static final String COLUMN_TITLE = "title";
+	public static final String COLUMN_CREATED_AT = "created_at";
+	public static final String COLUMN_START_AT = "start_at";
+	public static final String COLUMN_END_AT = "end_at";
+
 	private long id;
+	private String title;
 	private long createdAt;
 	private long startAt;
 	private long endAt;
@@ -61,11 +68,11 @@ public class TaskModel {
 	public JSONObject toJson() throws JSONException {
 		JSONObject json = new JSONObject();
 
-		json.put("title"    , this.title);
-		json.put("id"       , this.id);
-		json.put("createdAt", this.createdAt);
-		json.put("startAt"  , this.startAt);
-		json.put("endAt"    , this.endAt);
+		json.put(TaskModel.COLUMN_TITLE     , this.title);
+		json.put(TaskModel.COLUMN_ID        , this.id);
+		json.put(TaskModel.COLUMN_CREATED_AT, this.createdAt);
+		json.put(TaskModel.COLUMN_START_AT  , this.startAt);
+		json.put(TaskModel.COLUMN_END_AT    , this.endAt);
 		return json;
 	}
 }
