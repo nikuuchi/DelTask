@@ -1,5 +1,8 @@
 package net.nikuuchi.deltask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class TaskModel {
 	private String title;
 	private long id;
@@ -53,5 +56,16 @@ public class TaskModel {
 
 	public void setEndAt(long endAt) {
 		this.endAt = endAt;
+	}
+
+	public JSONObject toJson() throws JSONException {
+		JSONObject json = new JSONObject();
+
+		json.put("title"    , this.title);
+		json.put("id"       , this.id);
+		json.put("createdAt", this.createdAt);
+		json.put("startAt"  , this.startAt);
+		json.put("endAt"    , this.endAt);
+		return json;
 	}
 }
