@@ -3,6 +3,8 @@ package net.nikuuchi.deltask;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,7 +36,14 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				TaskModel item = (TaskModel) parent.getItemAtPosition(position);
-	            Toast.makeText(mActivity, item.toString(), Toast.LENGTH_SHORT).show();
+				String str = item.toString();
+				try {
+					str = item.toJson().toString(4);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            Toast.makeText(mActivity, str, Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
