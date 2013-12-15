@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class TaskDBHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 4;
 	public static final String DATABASE_NAME = "Task.db";
 
 	public static final String CREATE_TABLE_TASK =
@@ -15,7 +15,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
                     Task.COLUMN_TITLE + " TEXT NOT NULL, " +
                     Task.COLUMN_CREATED_AT + " INTEGER, " +
                     Task.COLUMN_START_AT+ " INTEGER, " +
-                    Task.COLUMN_END_AT+ " INTEGER "+
+                    Task.COLUMN_END_AT+ " INTEGER, "+
                     Task.COLUMN_DELETE_FLAG + " INTEGER );";
 ;
 	private static final String DELETE_TABLE_TASK = "DROP TABLE IF EXISTS " + Task.TABLE_NAME;

@@ -28,6 +28,15 @@ public class Task {
 		this.setDeleteFlag(false);
 	}
 
+	Task(String title, long id, long createdAt, long startAt, long endAt, boolean deleteFlag) {
+		this.setTitle(title);
+		this.setId(id);
+		this.setCreatedAt(createdAt);
+		this.setStartAt(startAt);
+		this.setEndAt(endAt);
+		this.setDeleteFlag(deleteFlag);
+	}
+
 	public String getTitle() {
 		return title;
 	}

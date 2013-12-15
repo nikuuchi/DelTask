@@ -1,7 +1,5 @@
 package net.nikuuchi.deltask;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
@@ -9,7 +7,6 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,13 +24,11 @@ public class MainActivity extends Activity {
 	TaskDBHelper helper;
 
 	private List<Task> loadTaskList() {
-		List<Task> list = new ArrayList<Task>();
 		if(helper == null) {
 			helper = new TaskDBHelper(this);
 		}
-		SQLiteDatabase db = helper.getReadableDatabase();
 
-		return list;
+		return TaskDBUtils.select(helper);
 	}
 
 	@Override
@@ -95,8 +90,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				long time = new Date().getTime();
-				adapter.add(new Task(editText.getText().toString(), 11, time, time));
+				Task t = TaskDBUtils.insert(helper, editText.getText().toString());
+				adapter.add(t);
 			}
 		}).show().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 	}
