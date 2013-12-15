@@ -71,12 +71,16 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_new_task:
 			this.newTask();
-			//Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 			return true;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onPause() {
+		//TODO
 	}
 
 	private void newTask() {
