@@ -1,5 +1,7 @@
 package net.nikuuchi.deltask;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.content.Context;
@@ -30,9 +32,11 @@ public class TaskListItemAdapter extends ArrayAdapter<TaskModel> {
         TaskModel item = getItem(position);
 
         TextView text1 = (TextView) view.findViewById(R.id.TitleText);
-        text1.setText("Title:" + item.getTitle());
+        text1.setText("Task: " + item.getTitle());
         TextView text2 = (TextView) view.findViewById(R.id.CreatedTime);
-        text2.setText("SubTitle:" + item.getCreatedAt());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd h:mm a");
+        String str = sdf.format(new Date(item.getCreatedAt()));
+        text2.setText(str);
 
         return view;
 	}
