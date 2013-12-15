@@ -1,6 +1,7 @@
 package net.nikuuchi.deltask;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	TaskListItemAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class MainActivity extends Activity {
 		}
 		
 		ListView listView = (ListView) findViewById(R.id.TaskListView);
-		TaskListItemAdapter adapter = new TaskListItemAdapter(mActivity, list);
+		adapter = new TaskListItemAdapter(mActivity, list);
 		//ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener(){
@@ -60,12 +62,17 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_new_task:
-			Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+			this.newTask();
+			//Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 			return true;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void newTask() {
+		adapter.add(new TaskModel("fsa",11,new Date().getTime(), 0, 0));
 	}
 
 }
