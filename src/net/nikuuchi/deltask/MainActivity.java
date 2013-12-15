@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -80,7 +81,6 @@ public class MainActivity extends Activity {
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = inflater.inflate(R.layout.input_dialog, null);
 		final EditText editText = (EditText)view.findViewById(R.id.editText1);
-
 		new AlertDialog.Builder(this)
 			.setTitle(R.string.dialog_text)
 			.setView(view)
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				adapter.add(new TaskModel(editText.getText().toString(),11,new Date().getTime(), 0, 0));
 			}
-		}).show();
+		}).show().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 	}
 
 }
