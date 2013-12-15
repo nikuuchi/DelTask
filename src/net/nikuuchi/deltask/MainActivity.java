@@ -9,6 +9,7 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,9 +24,15 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	TaskListItemAdapter adapter;
+	TaskModelDBHelper helper;
 
-	private List<TaskModel> loadTaskList() {
-		List<TaskModel> list = new ArrayList<TaskModel>();
+	private List<Task> loadTaskList() {
+		List<Task> list = new ArrayList<Task>();
+		if(helper == null) {
+			helper = new TaskModelDBHelper(this);
+		}
+		SQLiteDatabase db = helper.getReadableDatabase();
+
 		return list;
 	}
 
@@ -44,7 +51,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				TaskModel item = (TaskModel) parent.getItemAtPosition(position);
+				Task item = (Task) parent.getItemAtPosition(position);
 				String str = item.toString();
 				try {
 					str = item.toJson().toString(4);
@@ -88,7 +95,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				adapter.add(new TaskModel(editText.getText().toString(),11,new Date().getTime(), 0, 0));
+				long time = new Date().getTime();
+				adapter.add(new Task(editText.getText().toString(), 11, time, time));
 			}
 		}).show().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 	}

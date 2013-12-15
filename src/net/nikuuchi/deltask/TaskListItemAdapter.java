@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TaskListItemAdapter extends ArrayAdapter<TaskModel> {
+public class TaskListItemAdapter extends ArrayAdapter<Task> {
 	private LayoutInflater mLayoutInflater;
 
-	public TaskListItemAdapter(Context context, List<TaskModel> objects) {
+	public TaskListItemAdapter(Context context, List<Task> objects) {
 		super(context, 0/*Custom List Item*/, objects);
 		this.setmLayoutInflater((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
 	}
@@ -29,7 +29,7 @@ public class TaskListItemAdapter extends ArrayAdapter<TaskModel> {
             view = convertView;
         }
 
-        TaskModel item = getItem(position);
+        Task item = getItem(position);
 
         TextView text1 = (TextView) view.findViewById(R.id.TitleText);
         text1.setText("Task: " + item.getTitle());
