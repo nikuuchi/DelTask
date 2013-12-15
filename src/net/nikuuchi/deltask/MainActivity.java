@@ -24,12 +24,12 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	TaskListItemAdapter adapter;
-	TaskModelDBHelper helper;
+	TaskDBHelper helper;
 
 	private List<Task> loadTaskList() {
 		List<Task> list = new ArrayList<Task>();
 		if(helper == null) {
-			helper = new TaskModelDBHelper(this);
+			helper = new TaskDBHelper(this);
 		}
 		SQLiteDatabase db = helper.getReadableDatabase();
 
