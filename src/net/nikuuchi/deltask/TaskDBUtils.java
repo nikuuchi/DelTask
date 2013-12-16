@@ -94,4 +94,16 @@ public class TaskDBUtils {
 		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
 	}
 
+	public static int delete_logical(TaskDBHelper helper, Task item) {
+		SQLiteDatabase db = helper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+
+		values.put(Task.COLUMN_DELETE_FLAG, 1);
+		String whereClause = Task.COLUMN_ID + " = ?";
+		String[] whereArgs = {
+				"" + item.getId()
+		};
+		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+	}
+
 }

@@ -1,7 +1,7 @@
 package net.nikuuchi.deltask;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -39,12 +39,16 @@ public class TaskListItemAdapter extends ArrayAdapter<Task> {
         text2.setText(str);
 
         TextView text3 = (TextView) view.findViewById(R.id.StartTime);
-        String str2 = sdf.format(new Date(item.getStartAt()));
-        text3.setText(str2);
-
+        if(item.getStartAt() != 0) {
+            long end_time = item.getEndAt() != 0? item.getEndAt(): new Date().getTime();
+            long time = (end_time - item.getStartAt()) / 1000;
+            text3.setText(""+time + "sec");
+        } else {
+        	text3.setText("Not start");
+        }
         return view;
 	}
-	
+
 	public LayoutInflater getmLayoutInflater() {
 		return mLayoutInflater;
 	}

@@ -56,10 +56,14 @@ public class MainActivity extends Activity {
 					item.setStartAt(d.getTime());
 					TaskDBUtils.update_startTime(helper, item);
 		            Toast.makeText(mActivity, "Start:"+ sdf.format(d), Toast.LENGTH_SHORT).show();
-				} else {
+				} else if(item.getEndAt() == 0) {
 					item.setEndAt(new Date().getTime());
-					TaskDBUtils.update_startTime(helper, item);
+					TaskDBUtils.update_endTime(helper, item);
 		            Toast.makeText(mActivity, "End:"+ sdf.format(d), Toast.LENGTH_SHORT).show();
+				} else {
+					TaskDBUtils.delete_logical(helper, item);
+					adapter.remove(item);
+		            Toast.makeText(mActivity, "Remove Task:"+ sdf.format(d), Toast.LENGTH_SHORT).show();
 				}
 	            adapter.notifyDataSetChanged();
 			}
