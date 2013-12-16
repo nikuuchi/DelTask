@@ -19,5 +19,12 @@
         android:layout_alignLeft="@+id/TitleText"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/TitleText" />
-	
+
+		<TextView
+        android:id="@+id/StartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/CreatedTime"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>

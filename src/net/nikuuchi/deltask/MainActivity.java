@@ -1,5 +1,7 @@
 package net.nikuuchi.deltask;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
@@ -47,14 +49,19 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				Task item = (Task) parent.getItemAtPosition(position);
-				String str = item.toString();
-				try {
-					str = item.toJson().toString(4);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				Date d = new Date();
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd h:mm a");
+
+		        if(item.getStartAt() == 0) {
+					item.setStartAt(d.getTime());
+					TaskDBUtils.update_startTime(helper, item);
+		            Toast.makeText(mActivity, "Start:"+ sdf.format(d), Toast.LENGTH_SHORT).show();
+				} else {
+					item.setEndAt(new Date().getTime());
+					TaskDBUtils.update_startTime(helper, item);
+		            Toast.makeText(mActivity, "End:"+ sdf.format(d), Toast.LENGTH_SHORT).show();
 				}
-	            Toast.makeText(mActivity, str, Toast.LENGTH_SHORT).show();
+	            adapter.notifyDataSetChanged();
 			}
 		});
 	}
@@ -80,6 +87,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onPause() {
+		super.onPause();
 		//TODO
 	}
 

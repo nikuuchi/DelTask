@@ -57,13 +57,41 @@ public class TaskDBUtils {
 		SQLiteDatabase db = helper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		long time = new Date().getTime();
+		long time_null = 0;
 		values.put(Task.COLUMN_TITLE, title);
 		values.put(Task.COLUMN_CREATED_AT, time);
-		values.put(Task.COLUMN_START_AT, time);
-		values.put(Task.COLUMN_END_AT, 0);
+		values.put(Task.COLUMN_START_AT, time_null);
+		values.put(Task.COLUMN_END_AT, time_null);
 		values.put(Task.COLUMN_DELETE_FLAG, 0);
 		
 		long id = db.insert(Task.TABLE_NAME, null, values);
-		return new Task(title, id, time, time, 0, false);
+		return new Task(title, id, time, time_null, time_null, false);
 	}
+
+	public static int update_startTime(TaskDBHelper helper, Task item) {
+		SQLiteDatabase db = helper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		long time = new Date().getTime();
+
+		values.put(Task.COLUMN_START_AT, time);
+		String whereClause = Task.COLUMN_ID + " = ?";
+		String[] whereArgs = {
+				"" + item.getId()
+		};
+		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+	}
+
+	public static int update_endTime(TaskDBHelper helper, Task item) {
+		SQLiteDatabase db = helper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		long time = new Date().getTime();
+
+		values.put(Task.COLUMN_END_AT, time);
+		String whereClause = Task.COLUMN_ID + " = ?";
+		String[] whereArgs = {
+				"" + item.getId()
+		};
+		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+	}
+
 }

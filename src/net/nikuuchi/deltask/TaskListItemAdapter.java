@@ -38,6 +38,10 @@ public class TaskListItemAdapter extends ArrayAdapter<Task> {
         String str = sdf.format(new Date(item.getCreatedAt()));
         text2.setText(str);
 
+        TextView text3 = (TextView) view.findViewById(R.id.StartTime);
+        String str2 = sdf.format(new Date(item.getStartAt()));
+        text3.setText(str2);
+
         return view;
 	}
 	
