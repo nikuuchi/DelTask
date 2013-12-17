@@ -24,8 +24,10 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	TaskListItemAdapter adapter;
+	Handler handler;
 	TaskDBHelper helper;
 	Timer timer;
+	TimerTask timerTask;
 
 	private List<Task> loadTaskList() {
 		if(helper == null) {
@@ -35,13 +37,29 @@ public class MainActivity extends Activity {
 		return TaskDBUtils.select(helper);
 	}
 
+	private void initTimer() {
+		timer = new Timer();
+		handler = new Handler();
+		timerTask = new TimerTask() {
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						adapter.notifyDataSetChanged();
+					}
+				});
+			}
+		};
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		final Activity mActivity = this;
-		timer = new Timer();
-		final Handler handler = new Handler();
+		initTimer();
 
 		ListView listView = (ListView) findViewById(R.id.TaskListView);
 		adapter = new TaskListItemAdapter(mActivity, loadTaskList());
@@ -73,18 +91,14 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						adapter.notifyDataSetChanged();
-					}
-				});
-			}
-		}, 1000, 1000);
+		timer.schedule(timerTask, 1000, 1000);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		initTimer();
+		timer.schedule(timerTask, 1000, 1000);
 	}
 
 	@Override
