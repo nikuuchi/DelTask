@@ -59,7 +59,7 @@ public class TaskListItemAdapter extends ArrayAdapter<Task> {
 		long h = (time - (hours * 3600));
 		long minutes =  h / 60;
 		long sec = (h - (minutes * 60));
-		return "" + String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", sec);
+		return String.format("%02d:%02d:%02d", hours, minutes, sec);
 	}
 
 	public LayoutInflater getmLayoutInflater() {
