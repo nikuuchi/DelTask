@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/CreatedTime"
         android:layout_alignParentRight="true"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
 </RelativeLayout>

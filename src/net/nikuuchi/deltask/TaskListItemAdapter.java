@@ -32,7 +32,8 @@ public class TaskListItemAdapter extends ArrayAdapter<Task> {
         Task item = getItem(position);
 
         TextView text1 = (TextView) view.findViewById(R.id.TitleText);
-        text1.setText("Task: " + item.getTitle());
+        text1.setText(item.getTitle());
+
         TextView text2 = (TextView) view.findViewById(R.id.CreatedTime);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd h:mm a");
         String str = sdf.format(new Date(item.getCreatedAt()));
@@ -42,11 +43,19 @@ public class TaskListItemAdapter extends ArrayAdapter<Task> {
         if(item.getStartAt() != 0) {
             long end_time = item.getEndAt() != 0? item.getEndAt(): new Date().getTime();
             long time = (end_time - item.getStartAt()) / 1000;
-            text3.setText(""+time + "sec");
+            text3.setText(formatTime(time));
         } else {
         	text3.setText("Not start");
         }
         return view;
+	}
+
+	private String formatTime(long time) {
+		long hours = time / 3600;
+		long h = (time - (hours * 3600));
+		long minutes =  h / 60;
+		long sec = (h - (minutes * 60));
+		return "" + String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", sec);
 	}
 
 	public LayoutInflater getmLayoutInflater() {

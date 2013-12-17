@@ -37,11 +37,11 @@ public class TaskDBUtils {
 		Cursor cursor = db.query(Task.TABLE_NAME, projection, selection, null, null, null, null);
 		boolean isEOF = cursor.moveToFirst();
 		while(isEOF) {
-			long id            = getLong(cursor, Task.COLUMN_ID);
-			String title       = getString(cursor, Task.COLUMN_TITLE);
-			long createdAt     = getLong(cursor, Task.COLUMN_CREATED_AT);
-			long startAt       = getLong(cursor, Task.COLUMN_START_AT);
-			long endAt         = getLong(cursor, Task.COLUMN_END_AT);
+			long id            = getLong(cursor,    Task.COLUMN_ID);
+			String title       = getString(cursor,  Task.COLUMN_TITLE);
+			long createdAt     = getLong(cursor,    Task.COLUMN_CREATED_AT);
+			long startAt       = getLong(cursor,    Task.COLUMN_START_AT);
+			long endAt         = getLong(cursor,    Task.COLUMN_END_AT);
 			boolean deleteFlag = getBoolean(cursor, Task.COLUMN_DELETE_FLAG);
 			
 			list.add(new Task(title, id, createdAt, startAt, endAt, deleteFlag));
@@ -58,10 +58,10 @@ public class TaskDBUtils {
 		ContentValues values = new ContentValues();
 		long time = new Date().getTime();
 		long time_null = 0;
-		values.put(Task.COLUMN_TITLE, title);
+		values.put(Task.COLUMN_TITLE,      title);
 		values.put(Task.COLUMN_CREATED_AT, time);
-		values.put(Task.COLUMN_START_AT, time_null);
-		values.put(Task.COLUMN_END_AT, time_null);
+		values.put(Task.COLUMN_START_AT,   time_null);
+		values.put(Task.COLUMN_END_AT,     time_null);
 		values.put(Task.COLUMN_DELETE_FLAG, 0);
 		
 		long id = db.insert(Task.TABLE_NAME, null, values);
