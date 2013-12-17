@@ -3,13 +3,14 @@ package net.nikuuchi.deltask;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import org.json.JSONException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	TaskListItemAdapter adapter;
 	TaskDBHelper helper;
+	Timer timer;
 
 	private List<Task> loadTaskList() {
 		if(helper == null) {
@@ -38,7 +40,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		final Activity mActivity = this;
-		
+		timer = new Timer();
+		final Handler handler = new Handler();
 
 		ListView listView = (ListView) findViewById(R.id.TaskListView);
 		adapter = new TaskListItemAdapter(mActivity, loadTaskList());
@@ -56,6 +59,7 @@ public class MainActivity extends Activity {
 					item.setStartAt(d.getTime());
 					TaskDBUtils.update_startTime(helper, item);
 		            Toast.makeText(mActivity, "Start:"+ sdf.format(d), Toast.LENGTH_SHORT).show();
+
 				} else if(item.getEndAt() == 0) {
 					item.setEndAt(new Date().getTime());
 					TaskDBUtils.update_endTime(helper, item);
@@ -68,6 +72,19 @@ public class MainActivity extends Activity {
 	            adapter.notifyDataSetChanged();
 			}
 		});
+
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						adapter.notifyDataSetChanged();
+					}
+				});
+			}
+		}, 1000, 1000);
 	}
 
 	@Override
@@ -92,7 +109,8 @@ public class MainActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		//TODO
+		timer.cancel();
+		timer = null;
 	}
 
 	private void newTask() {
