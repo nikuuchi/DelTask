@@ -43,7 +43,11 @@ public class TaskListItemAdapter extends ArrayAdapter<Task> {
         if(item.getStartAt() != 0) {
             long end_time = item.getEndAt() != 0? item.getEndAt(): new Date().getTime();
             long time = (end_time - item.getStartAt()) / 1000;
-            text3.setText(formatTime(time));
+            String time_format = formatTime(time);
+            if(item.getEndAt() != 0) {
+            	time_format = "Done. " + time_format;
+            }
+            text3.setText(time_format);
         } else {
         	text3.setText("Not start");
         }
