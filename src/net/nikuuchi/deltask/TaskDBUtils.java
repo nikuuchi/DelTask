@@ -37,11 +37,11 @@ public class TaskDBUtils {
 		Cursor cursor = db.query(Task.TABLE_NAME, projection, selection, null, null, null, null);
 		boolean isEOF = cursor.moveToFirst();
 		while(isEOF) {
-			long id      = getLong(cursor, Task.COLUMN_ID);
-			String title = getString(cursor, Task.COLUMN_TITLE);
-			long createdAt = getLong(cursor, Task.COLUMN_CREATED_AT);
-			long startAt = getLong(cursor, Task.COLUMN_START_AT);
-			long endAt = getLong(cursor, Task.COLUMN_END_AT);
+			long id            = getLong(cursor, Task.COLUMN_ID);
+			String title       = getString(cursor, Task.COLUMN_TITLE);
+			long createdAt     = getLong(cursor, Task.COLUMN_CREATED_AT);
+			long startAt       = getLong(cursor, Task.COLUMN_START_AT);
+			long endAt         = getLong(cursor, Task.COLUMN_END_AT);
 			boolean deleteFlag = getBoolean(cursor, Task.COLUMN_DELETE_FLAG);
 			
 			list.add(new Task(title, id, createdAt, startAt, endAt, deleteFlag));

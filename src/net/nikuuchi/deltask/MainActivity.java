@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -46,7 +47,6 @@ public class MainActivity extends Activity {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						adapter.notifyDataSetChanged();
 					}
 				});
@@ -110,10 +110,19 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.action_new_task:
 			this.newTask();
 			return true;
+		case R.id.action_settings:
+			intent = new Intent(this, SettingsActivity.class);
+			this.startActivity(intent);
+			break;
+		case R.id.action_summary:
+			intent = new Intent(this, SummaryActivity.class);
+			this.startActivity(intent);
+            break;
 		default:
 			break;
 		}
