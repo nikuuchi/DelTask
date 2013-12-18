@@ -114,7 +114,7 @@ public class TaskDBUtils {
 	}
 
 	public static long countCreatedTaskBetween(TaskDBHelper helper, long start_time, long end_time) {
-		String sql = "select count(id) from Task where created_at > ? and created_at < ?";
+		String sql = "select count(id) from Task where created_at > ? and created_at < ?"; //FIXME
 		SQLiteDatabase db = helper.getReadableDatabase();
 		String[] selectionArgs = { Long.toString(start_time), Long.toString(end_time)};
 		Cursor cursor = db.rawQuery(sql, selectionArgs);
@@ -129,7 +129,18 @@ public class TaskDBUtils {
 	}
 
 	public static long countDeletedTaskBetween(TaskDBHelper helper, long start_time, long end_time) {
-		return 0;
+		String sql = "select count(id) from Task where start_at > ? and start_at < ? and end_at != 0"; //FIXME
+		SQLiteDatabase db = helper.getReadableDatabase();
+		String[] selectionArgs = { Long.toString(start_time), Long.toString(end_time)};
+		Cursor cursor = db.rawQuery(sql, selectionArgs);
+		boolean isEOF = cursor.moveToFirst();
+		long count = 0;
+		while(isEOF) {
+			count = cursor.getLong(0);
+			isEOF = cursor.moveToNext();
+		}
+		db.close();
+		return count;
 	}
 
 	public static String countDeletedTaskTotalTimeBetween(TaskDBHelper helper,
