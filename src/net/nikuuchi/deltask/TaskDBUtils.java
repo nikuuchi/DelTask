@@ -145,9 +145,29 @@ public class TaskDBUtils {
 		return count;
 	}
 
+	private static String formatTime(long time) {
+		long hours = time / 3600;
+		long h = (time - (hours * 3600));
+		long minutes =  h / 60;
+		long sec = (h - (minutes * 60));
+		return String.format("%02d:%02d:%02d", hours, minutes, sec);
+	}
+
 	public static String calcDeletedTaskTotalTimeBetween(TaskDBHelper helper, long start_time, long end_time) {
-		// TODO Auto-generated method stub
-		return String.format("%02d:%02d:%02d", 2,4,5);
+		SQLiteDatabase db = helper.getReadableDatabase();
+		String sql = "select * from Task where start_at > ? and start_at < ? and end_at != 0"; //FIXME
+		String[] selectionArgs = { Long.toString(start_time), Long.toString(end_time)};
+
+		Cursor cursor = db.rawQuery(sql, selectionArgs);
+		boolean isEOF = cursor.moveToFirst();
+		long sum = 0;
+		while(isEOF) {
+			long startAt       = getLong(cursor,    Task.COLUMN_START_AT);
+			long endAt         = getLong(cursor,    Task.COLUMN_END_AT);
+			sum += (endAt - startAt);
+			isEOF = cursor.moveToNext();
+		}
+		return formatTime(sum / 1000);
 	}
 
 	public static List<Task> selectCompletedList(TaskDBHelper helper, long start_time, long end_time) {
