@@ -106,4 +106,29 @@ public class TaskDBUtils {
 		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
 	}
 
+	public static long countCreatedTaskBetween(TaskDBHelper helper,
+			long start_time, long end_time) {
+				return 0;
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static long countDeletedTaskBetween(TaskDBHelper helper,
+			long start_time, long end_time) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static String countDeletedTaskTotalTimeBetween(TaskDBHelper helper,
+			long start_time, long end_time) {
+		// TODO Auto-generated method stub
+		return String.format("%02d:%02d:%02d", 2,4,5);
+	}
+
+	public static List<Task> selectCompletedList(TaskDBHelper helper,
+			long start_time, long end_time) {
+		// TODO Auto-generated method stub
+		return new ArrayList<Task>();
+	}
+
 }

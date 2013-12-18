@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class SummaryActivity extends FragmentActivity {
@@ -52,7 +54,6 @@ public class SummaryActivity extends FragmentActivity {
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public class SummaryActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
+			// Show 2 total pages.
 			return 2;
 		}
 
@@ -131,16 +132,7 @@ public class SummaryActivity extends FragmentActivity {
 		public DummySectionFragment() {
 		}
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_summary_dummy,
-					container, false);
-
-			int section = getArguments().getInt(ARG_SECTION_NUMBER);
-
-			long start_time = 0;
-			long end_time = 0;
+		private Date getDate() {
 			Calendar calender = Calendar.getInstance();
 			int year = calender.get(Calendar.YEAR);
 			int month = calender.get(Calendar.MONTH) + 1; // 0 - 11
@@ -152,7 +144,22 @@ public class SummaryActivity extends FragmentActivity {
 				e.printStackTrace();
 				today = new Date();
 			}
+			return today;
+		}
 
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_summary_dummy,
+					container, false);
+			TaskDBHelper helper = new TaskDBHelper(getActivity());
+
+			int section = getArguments().getInt(ARG_SECTION_NUMBER);
+
+			long start_time = 0;
+			long end_time = 0;
+			Date today = getDate();
+			
 			switch (section) {
 			case 1:
 				start_time = today.getTime();
@@ -166,21 +173,29 @@ public class SummaryActivity extends FragmentActivity {
 				Log.d("TaskDel", "default in SummaryActivity.onCreateView");
 				break;
 			}
+
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 	        String start_time_formatted = sdf.format(new Date(start_time));
 
 			TextView sectionLabelView = (TextView) rootView.findViewById(R.id.section_label);
 			sectionLabelView.setText(start_time_formatted);
 
+			long count = TaskDBUtils.countCreatedTaskBetween(helper, start_time, end_time);
 			TextView allTaskCountView = (TextView) rootView.findViewById(R.id.all_task_count);
-			allTaskCountView.setText(String.format("%d", 3));
+			allTaskCountView.setText(String.format("%d", count));
 
+			long count_completed = TaskDBUtils.countDeletedTaskBetween(helper, start_time, end_time);
 			TextView completedTaskView = (TextView) rootView.findViewById(R.id.completed_task_count);
-			completedTaskView.setText(String.format("%d", 2));
+			completedTaskView.setText(String.format("%d", count_completed));
 
+			String formatedCountTime = TaskDBUtils.countDeletedTaskTotalTimeBetween(helper, start_time, end_time);
 			TextView TaskTimeView = (TextView) rootView.findViewById(R.id.task_time_count);
-			TaskTimeView.setText(String.format("%02d:%02d:%02d", 2,4,5));
+			TaskTimeView.setText(formatedCountTime);
 
+			List<Task> list = TaskDBUtils.selectCompletedList(helper, start_time, end_time);
+			ListView listView = (ListView) rootView.findViewById(R.id.completed_task_list);
+			TaskListItemAdapter adapter = new TaskListItemAdapter(getActivity(), list);
+			listView.setAdapter(adapter);
 			return rootView;
 		}
 	}
