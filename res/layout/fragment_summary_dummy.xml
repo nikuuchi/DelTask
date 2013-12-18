@@ -6,11 +6,89 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SummaryActivity$DummySectionFragment" >
+    tools:context=".SummaryActivity$DummySectionFragment"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:text="section label"
+        android:textSize="22sp" />
 
+    <TextView
+        android:id="@+id/all_task_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/section_label"
+        android:layout_below="@+id/section_label"
+        android:text="@string/createdTask"
+        android:textSize="18sp" />
+
+     <TextView
+        android:id="@+id/all_task_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_label"
+		android:text="@string/placeholder"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp" />
+    <!-- count text -->
+    <TextView
+        android:id="@+id/completed_task_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/section_label"
+        android:layout_below="@+id/all_task_count_text"
+		android:text="@string/completedTask"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/completed_task_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:text="@string/placeholder"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/all_task_count_text"
+        android:textSize="18sp" />
+
+    <!-- time count -->
+    <TextView
+        android:id="@+id/task_time_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/section_label"
+        android:layout_below="@+id/completed_task_count_text"
+		android:text="@string/totalTime"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/task_time_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/completed_task_count_text"
+		android:text="@string/placeholder"
+        android:textSize="18sp" />
+    
+    <!-- title -->
+    <TextView
+        android:id="@+id/completed_task_list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/section_label"
+        android:layout_below="@+id/task_time_count_text"
+        android:text="@string/completedTaskTitle"
+        android:textSize="18sp" />
+
+    <ListView 
+        android:id="@+id/completed_task_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/section_label"
+        android:layout_below="@+id/completed_task_list_title"
+        android:textSize="18sp" />
 </RelativeLayout>

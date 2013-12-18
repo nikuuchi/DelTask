@@ -6,9 +6,12 @@
     <string name="action_summary">Summary</string>
     <string name="action_new">New Item</string>
     <string name="dialog_text">Input Task Name:</string>
-    <string name="title_activity_summary">SummaryActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
+    <string name="title_activity_summary">Summary</string>
+    <string name="title_section1">Today</string>
+    <string name="title_section2">YesterDay</string>
+	<string name="createdTask">Created Task: </string>
+	<string name="completedTask">Completed Task: </string>
+	<string name="totalTime">Total Time: </string>
+	<string name="completedTaskTitle">Completed Task List</string>
+	<string name="placeholder">0</string>
 </resources>

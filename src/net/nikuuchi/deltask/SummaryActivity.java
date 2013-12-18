@@ -1,5 +1,10 @@
 package net.nikuuchi.deltask;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import android.content.Intent;
@@ -9,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,7 +101,7 @@ public class SummaryActivity extends FragmentActivity {
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -106,8 +112,6 @@ public class SummaryActivity extends FragmentActivity {
 				return getString(R.string.title_section1).toUpperCase(l);
 			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;
 		}
@@ -132,10 +136,51 @@ public class SummaryActivity extends FragmentActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_summary_dummy,
 					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
+
+			int section = getArguments().getInt(ARG_SECTION_NUMBER);
+
+			long start_time = 0;
+			long end_time = 0;
+			Calendar calender = Calendar.getInstance();
+			int year = calender.get(Calendar.YEAR);
+			int month = calender.get(Calendar.MONTH) + 1; // 0 - 11
+			int day = calender.get(Calendar.DAY_OF_MONTH);
+			Date today = null;
+			try {
+				today = DateFormat.getDateInstance().parse(String.format("%d/%d/%d", year,month,day));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				today = new Date();
+			}
+
+			switch (section) {
+			case 1:
+				start_time = today.getTime();
+				end_time = today.getTime() + (60*60*24*1000);
+				break;
+			case 2:
+				start_time = today.getTime() - (60*60*24*1000);
+				end_time = today.getTime();
+				break;
+			default:
+				Log.d("TaskDel", "default in SummaryActivity.onCreateView");
+				break;
+			}
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	        String start_time_formatted = sdf.format(new Date(start_time));
+
+			TextView sectionLabelView = (TextView) rootView.findViewById(R.id.section_label);
+			sectionLabelView.setText(start_time_formatted);
+
+			TextView allTaskCountView = (TextView) rootView.findViewById(R.id.all_task_count);
+			allTaskCountView.setText(String.format("%d", 3));
+
+			TextView completedTaskView = (TextView) rootView.findViewById(R.id.completed_task_count);
+			completedTaskView.setText(String.format("%d", 2));
+
+			TextView TaskTimeView = (TextView) rootView.findViewById(R.id.task_time_count);
+			TaskTimeView.setText(String.format("%02d:%02d:%02d", 2,4,5));
+
 			return rootView;
 		}
 	}
