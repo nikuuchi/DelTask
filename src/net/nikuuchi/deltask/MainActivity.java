@@ -8,10 +8,13 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,6 +118,9 @@ public class MainActivity extends Activity {
 		case R.id.action_new_task:
 			this.newTask();
 			return true;
+		case R.id.action_new_task_mic:
+			this.newTask_mic();
+			return true;
 		case R.id.action_settings:
 			intent = new Intent(this, SettingsActivity.class);
 			this.startActivity(intent);
@@ -136,6 +142,18 @@ public class MainActivity extends Activity {
 		timer = null;
 	}
 
+	private void newTask_mic() {
+		try {
+			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+			intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "VoiceRecognitionTest");
+			startActivityForResult(intent, 0);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+
 	private void newTask() {
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = inflater.inflate(R.layout.input_dialog, null);
@@ -151,6 +169,24 @@ public class MainActivity extends Activity {
 				adapter.add(t);
 			}
 		}).show().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if( requestCode == 0 && resultCode == RESULT_OK) {
+			String result ="";
+
+			List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+			if(results.size() > 0) {
+				result = results.get(0);
+			}
+			for (String string : results) {
+				Log.d("App", string);
+			}
+			Task t = TaskDBUtils.insert(helper, result);
+			adapter.add(t);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 }
