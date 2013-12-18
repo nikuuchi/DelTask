@@ -65,6 +65,7 @@ public class TaskDBUtils {
 		values.put(Task.COLUMN_DELETE_FLAG, 0);
 		
 		long id = db.insert(Task.TABLE_NAME, null, values);
+		db.close();
 		return new Task(title, id, time, time_null, time_null, false);
 	}
 
@@ -78,7 +79,9 @@ public class TaskDBUtils {
 		String[] whereArgs = {
 				"" + item.getId()
 		};
-		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+		int ret = db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+		db.close();
+		return ret;
 	}
 
 	public static int update_endTime(TaskDBHelper helper, Task item) {
@@ -91,7 +94,9 @@ public class TaskDBUtils {
 		String[] whereArgs = {
 				"" + item.getId()
 		};
-		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+		int ret = db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+		db.close();
+		return ret;
 	}
 
 	public static int delete_logical(TaskDBHelper helper, Task item) {
@@ -103,19 +108,27 @@ public class TaskDBUtils {
 		String[] whereArgs = {
 				"" + item.getId()
 		};
-		return db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+		int ret = db.update(Task.TABLE_NAME, values, whereClause, whereArgs);
+		db.close();
+		return ret;
 	}
 
-	public static long countCreatedTaskBetween(TaskDBHelper helper,
-			long start_time, long end_time) {
-				return 0;
-		// TODO Auto-generated method stub
-		
+	public static long countCreatedTaskBetween(TaskDBHelper helper, long start_time, long end_time) {
+		String sql = "select count(id) from Task where created_at > ? and created_at < ?";
+		SQLiteDatabase db = helper.getReadableDatabase();
+		String[] selectionArgs = { Long.toString(start_time), Long.toString(end_time)};
+		Cursor cursor = db.rawQuery(sql, selectionArgs);
+		boolean isEOF = cursor.moveToFirst();
+		long count = 0;
+		while(isEOF) {
+			count = cursor.getLong(0);
+			isEOF = cursor.moveToNext();
+		}
+		db.close();
+		return count;
 	}
 
-	public static long countDeletedTaskBetween(TaskDBHelper helper,
-			long start_time, long end_time) {
-		// TODO Auto-generated method stub
+	public static long countDeletedTaskBetween(TaskDBHelper helper, long start_time, long end_time) {
 		return 0;
 	}
 
