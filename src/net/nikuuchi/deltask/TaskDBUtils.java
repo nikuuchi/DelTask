@@ -124,6 +124,7 @@ public class TaskDBUtils {
 			count = cursor.getLong(0);
 			isEOF = cursor.moveToNext();
 		}
+		cursor.close();
 		db.close();
 		return count;
 	}
@@ -139,20 +140,40 @@ public class TaskDBUtils {
 			count = cursor.getLong(0);
 			isEOF = cursor.moveToNext();
 		}
+		cursor.close();
 		db.close();
 		return count;
 	}
 
-	public static String countDeletedTaskTotalTimeBetween(TaskDBHelper helper,
-			long start_time, long end_time) {
+	public static String calcDeletedTaskTotalTimeBetween(TaskDBHelper helper, long start_time, long end_time) {
 		// TODO Auto-generated method stub
 		return String.format("%02d:%02d:%02d", 2,4,5);
 	}
 
-	public static List<Task> selectCompletedList(TaskDBHelper helper,
-			long start_time, long end_time) {
-		// TODO Auto-generated method stub
-		return new ArrayList<Task>();
+	public static List<Task> selectCompletedList(TaskDBHelper helper, long start_time, long end_time) {
+		List<Task> list = new ArrayList<Task>();
+		SQLiteDatabase db = helper.getReadableDatabase();
+
+		String sql = "select * from Task where start_at > ? and start_at < ? and end_at != 0"; //FIXME
+		String[] selectionArgs = { Long.toString(start_time), Long.toString(end_time)};
+
+		Cursor cursor = db.rawQuery(sql, selectionArgs);
+		boolean isEOF = cursor.moveToFirst();
+		while(isEOF) {
+			long id            = getLong(cursor,    Task.COLUMN_ID);
+			String title       = getString(cursor,  Task.COLUMN_TITLE);
+			long createdAt     = getLong(cursor,    Task.COLUMN_CREATED_AT);
+			long startAt       = getLong(cursor,    Task.COLUMN_START_AT);
+			long endAt         = getLong(cursor,    Task.COLUMN_END_AT);
+			boolean deleteFlag = getBoolean(cursor, Task.COLUMN_DELETE_FLAG);
+			
+			list.add(new Task(title, id, createdAt, startAt, endAt, deleteFlag));
+
+			isEOF = cursor.moveToNext();
+		}
+		cursor.close();
+		db.close();
+		return list;
 	}
 
 }

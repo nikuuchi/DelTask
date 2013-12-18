@@ -67,6 +67,10 @@ public class SummaryActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
+		case R.id.action_tasklist:
+			intent = new Intent(this, MainActivity.class);
+			this.startActivity(intent);
+			break;
 		case R.id.action_settings:
 			intent = new Intent(this, SettingsActivity.class);
 			this.startActivity(intent);
@@ -188,7 +192,7 @@ public class SummaryActivity extends FragmentActivity {
 			TextView completedTaskView = (TextView) rootView.findViewById(R.id.completed_task_count);
 			completedTaskView.setText(String.format("%d", count_completed));
 
-			String formatedCountTime = TaskDBUtils.countDeletedTaskTotalTimeBetween(helper, start_time, end_time);
+			String formatedCountTime = TaskDBUtils.calcDeletedTaskTotalTimeBetween(helper, start_time, end_time);
 			TextView TaskTimeView = (TextView) rootView.findViewById(R.id.task_time_count);
 			TaskTimeView.setText(formatedCountTime);
 

@@ -91,14 +91,14 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		timer.schedule(timerTask, 1000, 1000);
+		timer.schedule(timerTask, 100, 1000);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		initTimer();
-		timer.schedule(timerTask, 1000, 1000);
+		timer.schedule(timerTask, 100, 1000);
 	}
 
 	@Override

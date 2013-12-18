@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
 		android:text="section label"
-        android:textSize="22sp" />
+        android:textSize="26sp" />
 
     <TextView
         android:id="@+id/all_task_count_text"
@@ -26,6 +26,7 @@
         android:layout_alignLeft="@+id/section_label"
         android:layout_below="@+id/section_label"
         android:text="@string/createdTask"
+        android:paddingTop="10sp"
         android:textSize="18sp" />
 
      <TextView
@@ -82,13 +83,19 @@
         android:layout_alignLeft="@+id/section_label"
         android:layout_below="@+id/task_time_count_text"
         android:text="@string/completedTaskTitle"
-        android:textSize="18sp" />
-
+        android:paddingTop="15sp"
+        android:textSize="22sp" />
+	    <View 
+	   android:id="@+id/hr"
+	   android:layout_width="fill_parent"
+	   android:layout_height="2dp"       
+	   android:background="#000000"
+	   android:layout_below="@+id/completed_task_list_title"/>
     <ListView 
         android:id="@+id/completed_task_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/section_label"
-        android:layout_below="@+id/completed_task_list_title"
-        android:textSize="18sp" />
+        android:paddingTop="10sp"
+        android:layout_below="@+id/hr" />
 </RelativeLayout>
